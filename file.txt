@@ -1,0 +1,16 @@
+#Logistic Regression Classifier
+print("Logistic Regression\n")
+logreg = LogisticRegression(multi_class='multinomial', random_state=1)
+search_grid = ast.literal_eval(config.get('Grid_Search_Parameters', 'lr_param_grid'))
+lr_grid = GridSearchCV(estimator=logreg, param_grid=search_grid,
+                       scoring='accuracy',
+                       verbose=0, cv=5,
+                       return_train_score=True)
+lr_grid.fit(X_train, y_train)
+y_pred1 = lr_grid.predict(X_test)
+accuracy_lr = accuracy_score(y_test, y_pred1)*100
+f1_score_lr = f1_score(y_test, y_pred1, average='weighted')*100
+params_lr = lr_grid.best_params_
+print("Accuracy_score : ", accuracy_lr)
+print("F1_score : ", f1_score_lr)
+print("Grid_params : ", params_lr)
